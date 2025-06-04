@@ -1,22 +1,21 @@
-// This runs automatically on every page
-document.body.style.backgroundColor = "pink";
+(function () {
+  try {
+    document.body.style.background="pink";
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q");
 
-// Or replace all images:
-document.querySelectorAll("img").forEach(img => {
-  img.src = "https://placekitten.com/300/300";
-});
+    if (query) {
+      // Example optimization: lowercase and trim
+      const optimizedQuery = query.trim().toLowerCase();
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const active = document.activeElement;
-    console.log("Blocking search query");
-    // Check if the focused element is the Google search input
-    if (active && active.name === "q") {
-      e.preventDefault();
-      console.log("Blocked Enter key for Google search bar");
+      // Redirect to your optimized URL (replace with your real endpoint)
+      const redirectUrl = `https://example.com/search?q=${encodeURIComponent(optimizedQuery)}`;
 
-      const query = active.value;
-      chrome.runtime.sendMessage({ type: "query-blocked", query });
+      // Redirect as early as possible
+      console.log("redirectUrl", redirectUrl);
+      //window.location.replace(redirectUrl);
     }
+  } catch (err) {
+    console.error("Search redirect failed:", err);
   }
-});
+})();
